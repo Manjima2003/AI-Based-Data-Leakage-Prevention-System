@@ -7,24 +7,24 @@ import torch.optim as optim
 from sklearn.model_selection import train_test_split
 from torch.utils.data import DataLoader, TensorDataset
 
-# ✅ Ensure 'models/' directory exists
+# Ensure 'models/' directory exists
 os.makedirs("models", exist_ok=True)
 
-# ✅ Load Preprocessed Data
+# Load Preprocessed Data
 df = pd.read_csv("processed_aws_logs.csv")
 data = df.values.astype(np.float32)
 
-# ✅ Train-Test Split (90% Train, 10% Test)
+# Train-Test Split (90% Train, 10% Test)
 train_data, test_data = train_test_split(data, test_size=0.1, random_state=42)
 
-# ✅ Convert to PyTorch tensors
+# Convert to PyTorch tensors
 train_tensor = torch.tensor(train_data)
 test_tensor = torch.tensor(test_data)
 
-# ✅ DataLoader
+# DataLoader
 train_loader = DataLoader(TensorDataset(train_tensor), batch_size=32, shuffle=True)
 
-# ✅ Define Autoencoder Model
+# Define Autoencoder Model
 class Autoencoder(nn.Module):
     def __init__(self, input_dim):
         super(Autoencoder, self).__init__()
@@ -52,13 +52,13 @@ class Autoencoder(nn.Module):
         x = self.decoder(x)
         return x
 
-# ✅ Initialize Model
+# Initialize Model
 input_dim = train_data.shape[1]
 model = Autoencoder(input_dim)
 criterion = nn.MSELoss()  # Mean Squared Error for anomaly detection
 optimizer = optim.Adam(model.parameters(), lr=0.001)
 
-# ✅ Train Model
+#Train Model
 for epoch in range(20):
     optimizer.zero_grad()
     output = model(train_tensor)
@@ -67,6 +67,6 @@ for epoch in range(20):
     optimizer.step()
     print(f"Epoch {epoch+1}, Loss: {loss.item()}")
 
-# ✅ Save Model
+#Save Model
 torch.save(model.state_dict(), "models/autoencoder_model.pth")
 print(" Autoencoder Model Training Complete & Saved!")
