@@ -1,1 +1,1 @@
-AI Based Data Leakage Prevention System
+AI Based Data Leakage Detection  System
